@@ -3,11 +3,8 @@ FROM armhf/debian:latest as builder
 ENV version=b31_mod_201906
 ENV RTK_VER=demo5
 
-RUN apt-get update && apt-get install -y \
-        build-essential  \
-        gcc \
-        git \
-        wget 
+RUN apt-get update 
+RUN apt-get install -y build-essential gcc git wget 
 
 # Get RTKLIB and compile only required components
 ARG RTKLIB_URL=https://github.com/rtklibexplorer/RTKLIB.git
