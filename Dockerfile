@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 as builder
+FROM armhf/ubuntu:17.04 as builder
 
 ENV version=b31_mod_201906
 ENV RTK_VER=demo5
