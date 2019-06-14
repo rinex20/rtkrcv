@@ -1,4 +1,4 @@
-FROM armhf/debian:latest as builder
+FROM armhf/ubuntu:17.04 as builder
 
 ENV version=b31_mod_201906
 ENV RTK_VER=demo5
@@ -17,7 +17,7 @@ RUN git clone --depth 1 --branch ${RTK_VER} ${RTKLIB_URL} \
     && (cd RTKLIB/app/rtkrcv/gcc/; make; make install) 
 
 
-FROM armhf/debian:latest
+FROM armhf/ubuntu:17.04
 
 WORKDIR /data/rtk/conf
 # get conf file
