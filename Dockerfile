@@ -22,10 +22,17 @@ RUN git clone --depth 1 --branch ${RTK_VER} ${RTKLIB_URL} \
     && (cd RTKLIB/app/str2str/gcc/; make; make install) \
     && (cd RTKLIB/app/rtkrcv/gcc/; make; make install) 
 
+
+FROM armhf/ubuntu:17.04
+
 WORKDIR /data/rtk/conf
 # get conf file
 ARG CONF_URL=https://raw.githubusercontent.com/rinex20/gnss_tools/master/conf/rtkrcv.conf
 RUN wget --no-check-certificate ${CONF_URL} -O rtkrcv.conf
+
+RUN apt-get update && apt-get install -y csh
+
+COPY --from=builder /usr/local/bin/* /usr/local/bin/
 
 # run rtkrcv
 EXPOSE 8077 8078 82001-82008
