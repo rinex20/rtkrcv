@@ -3,7 +3,7 @@ FROM balenalib/raspberrypi3:build as builder
 ENV version=b31_mod_201906
 ENV RTK_VER=demo5
 
-RUN install_packages wget git
+RUN install_packages gfortran wget git
 
 # Get RTKLIB and compile only required components
 ARG RTKLIB_URL=https://github.com/rtklibexplorer/RTKLIB.git
