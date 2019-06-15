@@ -1,13 +1,9 @@
-FROM resin/rpi-raspbian:latest as builder
+FROM balenalib/raspberrypi3:build as builder
 
 ENV version=b31_mod_201906
 ENV RTK_VER=demo5
 
-# RUN apt-get update 
-RUN apt-get install -y build-essential \
-                   gcc \
-                   git \
-                   wget 
+RUN install_packages wget git
 
 # Get RTKLIB and compile only required components
 ARG RTKLIB_URL=https://github.com/rtklibexplorer/RTKLIB.git
@@ -20,7 +16,7 @@ RUN git clone --depth 1 --branch ${RTK_VER} ${RTKLIB_URL} \
     && (cd RTKLIB/app/rtkrcv/gcc/; make; make install) 
 
 
-FROM resin/rpi-raspbian:latest
+FROM balenalib/raspberrypi3:build
 
 WORKDIR /data/rtk/conf
 # get conf file
