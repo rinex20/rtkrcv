@@ -5,9 +5,14 @@ ENV RTK_VER=demo5
 
 RUN install_packages gfortran wget git
 
-# Get RTKLIB and compile only required components
+WORKDIR /data/rtk
+ARG CONF_URL=https://raw.githubusercontent.com/rinex20/gnss_tools/master/conf/rtkrcv.conf
 ARG RTKLIB_URL=https://github.com/rtklibexplorer/RTKLIB.git
-RUN git clone --depth 1 --branch ${RTK_VER} ${RTKLIB_URL} \
+# get conf file
+
+# Get RTKLIB and compile only required components
+RUN wget --no-check-certificate ${CONF_URL} -O rtkrcv.conf \
+    && git clone --depth 1 --branch ${RTK_VER} ${RTKLIB_URL} \
     && (cd RTKLIB/lib/iers/gcc/; make) \
     && (cd RTKLIB/app/convbin/gcc/; make; make install) \
     && (cd RTKLIB/app/rnx2rtkp/gcc/; make; make install) \
@@ -17,15 +22,9 @@ RUN git clone --depth 1 --branch ${RTK_VER} ${RTKLIB_URL} \
 
 
 FROM balenalib/raspberrypi3:build
-
-WORKDIR /data/rtk/conf
-# get conf file
-ARG CONF_URL=https://raw.githubusercontent.com/rinex20/gnss_tools/master/conf/rtkrcv.conf
-RUN wget --no-check-certificate ${CONF_URL} -O rtkrcv.conf
-
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 
 # run rtkrcv
 EXPOSE 8077 8078 8001-8008
 # CMD ["rtkrcv", "-p 8077 -m 8078 -o /data/rtk/conf/rtkrcv.conf"] 
-ENTRYPOINT ["rtkrcv", "-p", "8077", "-m", "8078", "-o" "/data/rtk/conf/rtkrcv.conf"] 
+ENTRYPOINT ["rtkrcv", "-p", "8077", "-m", "8078", "-o" "/data/rtk/rtkrcv.conf"] 
