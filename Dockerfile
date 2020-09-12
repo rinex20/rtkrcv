@@ -27,4 +27,4 @@ COPY --from=builder /usr/local/bin/* /usr/local/bin/
 # run rtkrcv
 EXPOSE 8077 8078 8001-8008
 # CMD ["rtkrcv", "-p 8077 -m 8078 -o /data/rtk/conf/rtkrcv.conf"] 
-ENTRYPOINT ["rtkrcv", "-p", "8077", "-m", "8078", "-o" "/data/rtk/rtkrcv.conf"] 
+CMD ["/usr/local/bin/rtkrcv", "-p", "8077", "-m", "8078", "-o" "/data/rtk/rtkrcv.conf"] 
