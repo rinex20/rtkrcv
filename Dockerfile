@@ -1,9 +1,9 @@
-FROM arm64v8/ubuntu:latest as builder
+FROM arm64v8/debian:8
 
 ENV version=b31_mod_201906
 ENV RTK_VER=demo5
 
-RUN install_packages wget git
+RUN install_packages gfortran wget git build-essential
 
 WORKDIR /data/rtk
 ARG CONF_URL=https://raw.githubusercontent.com/rinex20/gnss_tools/master/conf/rtkrcv.conf
@@ -21,8 +21,8 @@ RUN wget --no-check-certificate ${CONF_URL} -O rtkrcv.conf \
     && (cd RTKLIB/app/rtkrcv/gcc/; make; make install) 
 
 
-FROM arm64v8/ubuntu:latest
-COPY --from=builder /usr/local/bin/* /usr/local/bin/
+#FROM arm64v8/ubuntu:latest
+#COPY --from=builder /usr/local/bin/* /usr/local/bin/
 
 # run rtkrcv
 EXPOSE 8077 8078 8001-8008
