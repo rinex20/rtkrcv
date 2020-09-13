@@ -1,13 +1,13 @@
-FROM arm64v8/debian:8
+FROM arm64v8/ubuntu:latest
 
 ENV version=b31_mod_201906
 ENV RTK_VER=demo5
 
-RUN apt-get update \
-    && apt-get install gfortran -y \
-    && apt-get install wget -y \
-    && apt-get install git -y \
-    && apt-get install build-essential -y
+RUN apt update \
+    && apt install gfortran -y \
+    && apt install wget -y \
+    && apt install git -y \
+    && apt install build-essential -y
 
 WORKDIR /data/rtk
 ARG CONF_URL=https://raw.githubusercontent.com/rinex20/gnss_tools/master/conf/rtkrcv.conf
