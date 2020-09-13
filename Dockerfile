@@ -1,5 +1,5 @@
 #FROM arm64v8/ubuntu:latest
-FROM FROM multiarch/alpine:aarch64-edge
+FROM multiarch/alpine:aarch64-edge
 
 ENV version=b31_mod_201906
 ENV RTK_VER=demo5
