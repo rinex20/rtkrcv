@@ -4,10 +4,10 @@ ENV version=b31_mod_201906
 ENV RTK_VER=demo5
 
 RUN apt-get update \
-    && apt-get install gfortran \
-    && apt-get install wget \
-    && apt-get install git \
-    && apt-get install build-essential
+    && apt-get install gfortran -y \
+    && apt-get install wget -y \
+    && apt-get install git -y \
+    && apt-get install build-essential -y
 
 WORKDIR /data/rtk
 ARG CONF_URL=https://raw.githubusercontent.com/rinex20/gnss_tools/master/conf/rtkrcv.conf
