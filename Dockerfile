@@ -1,4 +1,4 @@
-FROM balenalib/raspberrypi3:build as builder
+FROM arm64v8/ubuntu:latest as builder
 
 ENV version=b31_mod_201906
 ENV RTK_VER=demo5
@@ -21,7 +21,7 @@ RUN wget --no-check-certificate ${CONF_URL} -O rtkrcv.conf \
     && (cd RTKLIB/app/rtkrcv/gcc/; make; make install) 
 
 
-FROM balenalib/raspberrypi3:build
+FROM arm64v8/ubuntu:latest
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 
 # run rtkrcv
