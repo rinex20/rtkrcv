@@ -1,7 +1,7 @@
 FROM ubuntu:18.04 as builder
 
 ENV version=20201209
-ENV RTK_VER=rtk_tools
+ENV RTK_VER=demo5
 ARG CONF_URL=https://raw.githubusercontent.com/rinex20/gnss_tools/master/conf/rtkrcv.conf
 ARG NTRIP_CFG=https://raw.githubusercontent.com/rinex20/another_ntripcaster/main/config.json
 ARG RTKLIB_URL=https://github.com/rtklibexplorer/RTKLIB.git
