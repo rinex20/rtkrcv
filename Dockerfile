@@ -36,7 +36,8 @@ FROM ubuntu:18.04
 LABEL maintainer="Jacky <cheungyong@gmail.com>"
 
 RUN apt-get update \
-  && apt-get install -y libev-dev
+  && apt-get install -y libev-dev \
+  && apt-get clean
 
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY --from=builder /data/rtk /data/
