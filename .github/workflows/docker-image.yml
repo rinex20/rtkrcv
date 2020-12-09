@@ -1,4 +1,4 @@
-name: Build rtkrcv
+name: Build multi architecture rtkrcv
 
 on:
   push:
@@ -13,7 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout codes
+      uses: actions/checkout@v2
     - name: Build the Docker image
       uses: ilteoood/docker_buildx@master
       with:
