@@ -9,12 +9,12 @@ ARG NTRIP_URL=https://github.com/tisyang/ntripcaster.git
 # get conf file
 
 WORKDIR /root
-RUN mkdir -p /etc/ntripcaster
 
 RUN apt-get update \
   && apt-get install -y build-essential g++ \
   && apt-get install -y git wget gfortran cmake tar libev-dev \
    && mkdir -p /data/rtk \
+   && mkdir -p /etc/ntripcaster \
    && cd /data/rtk \
    && wget ${CONF_URL} -O /data/rtk/rtkrcv.conf \
    && wget ${NTRIP_CFG} -O /etc/ntripcaster/config.json \
