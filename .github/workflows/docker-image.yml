@@ -1,4 +1,4 @@
-name: Build multi architecture rtkrcv
+name: Build multi architecture rtkrcv-a
 
 on:
   push:
