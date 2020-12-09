@@ -1,30 +1,29 @@
-#FROM arm64v8/ubuntu:latest
-FROM multiarch/alpine:aarch64-edge
+FROM ubuntu:18.04 as builder
 
-ENV version=b31_mod_201906
+ENV version=20201209
 ENV RTK_VER=demo5
 ARG CONF_URL=https://raw.githubusercontent.com/rinex20/gnss_tools/master/conf/rtkrcv.conf
 ARG RTKLIB_URL=https://github.com/rtklibexplorer/RTKLIB.git
 # get conf file
 
-RUN apk --no-cache add build-base git autoconf automake libtool gfortran wget tar zlib-dev pcre-dev unzip jemalloc-dev patch linux-headers \
-  && mkdir -p /data/rtk \
-  && cd /data/rtk \
-  && wget --no-check-certificate ${CONF_URL} -O rtkrcv.conf \
-    && git clone --depth 1 --branch ${RTK_VER} ${RTKLIB_URL} \
-    && (cd RTKLIB/lib/iers/gcc/; make) \
-    && (cd RTKLIB/app/convbin/gcc/; make; make install) \
-    && (cd RTKLIB/app/rnx2rtkp/gcc/; make; make install) \
-    && (cd RTKLIB/app/pos2kml/gcc/; make; make install) \
-    && (cd RTKLIB/app/str2str/gcc/; make; make install) \
-    && (cd RTKLIB/app/rtkrcv/gcc/; make; make install) \
-&& apk del build-base git autoconf automake wget tar unzip patch linux-headers || true
+RUN apt-get update \
+  && apt-get install -y build-essential \
+  && apt-get install -y git wget gfortran tar libev-dev \
+   && mkdir -p /data/rtk \
+   && cd /data/rtk \
+   && wget ${CONF_URL} -O /data/rtk/rtkrcv.conf \
+   && git clone --depth 1 --branch ${RTK_VER} ${RTKLIB_URL} \
+   && (cd RTKLIB/lib/iers/gcc/; make) \
+   && (cd RTKLIB/app/str2str/gcc; make; make install) \
+   && (cd RTKLIB/app/rtkrcv/gcc; make; make install)
 
 
-#FROM arm64v8/ubuntu:latest
-#COPY --from=builder /usr/local/bin/* /usr/local/bin/
-
+FROM ubuntu:18.04
+COPY --from=builder /usr/local/bin/* /usr/local/bin/
+COPY --from=builder /data/rtk/rtkrcv.conf /data/
 # run rtkrcv
 EXPOSE 8077 8078 8001-8008
-# CMD ["rtkrcv", "-p 8077 -m 8078 -o /data/rtk/conf/rtkrcv.conf"] 
-CMD ["/usr/local/bin/rtkrcv", "-p", "8077", "-m", "8078", "-o" "/data/rtk/rtkrcv.conf"] 
+VOLUME /data/rtk
+ENTRYPOINT ["/usr/local/bin/rtkrcv", "-p" ,"8077" ,"-m" ,"8078" ,"-o" ,"/data/rtkrcv.conf"]
+#CMD /usr/local/bin/rtkrcv -p 8077 -m 8078 
+
