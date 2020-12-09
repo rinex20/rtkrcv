@@ -35,6 +35,7 @@ RUN apt-get update \
 FROM ubuntu:18.04
 LABEL maintainer="Jacky <cheungyong@gmail.com>"
 
+
 RUN apt-get update \
   && apt-get install -y libev-dev \
   && apt-get clean \
@@ -44,6 +45,9 @@ RUN apt-get update \
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY --from=builder /data/rtk/* /data/rtk/
 COPY --from=builder /etc/ntripcaster/* /etc/ntripcaster/
+COPY entrypoint.sh /usr/local/bin/
+
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # run rtkrcv
 EXPOSE 2101 8077 8078 8001-8008
@@ -51,8 +55,8 @@ VOLUME ["/data/rtk", "/etc/ntripcaster"]
 
 CMD [ "/usr/local/bin/ntripcaster", "/etc/ntripcaster/config.json", ""]
 
-ENTRYPOINT ["/usr/local/bin/rtkrcv", "-p" ,"8077" ,"-m" ,"8078" ,"-o" ,"/data/rtk/rtkrcv.conf"]
+#ENTRYPOINT ["/usr/local/bin/rtkrcv", "-p" ,"8077" ,"-m" ,"8078" ,"-o" ,"/data/rtk/rtkrcv.conf"]
 #CMD ["/usr/local/bin/rtkrcv", "-p 8077 -m 8078 -o /data/rtk/rtkrcv.conf"] 
-#ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 
