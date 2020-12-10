@@ -21,39 +21,39 @@ RUN apt-get update \
    && git clone --depth 1 --branch ${RTK_VER} ${RTKLIB_URL} \
    && (cd RTKLIB/lib/iers/gcc/; make) \
    && (cd RTKLIB/app/str2str/gcc; make; make install) \
-   && (cd RTKLIB/app/rtkrcv/gcc; make; make install) \
-   && cd /root \
-   && git clone ${NTRIP_URL} \
-   && cd /root/ntripcaster \
-   && git submodule update --init \ 
-   && mkdir -p /root/ntripcaster/build \ 
-   && (cd /root/ntripcaster/build; cmake ..) \
-   && (cd /root/ntripcaster/build; make) \
-   && cp /root/ntripcaster/build/ntripcaster /usr/local/bin/ 
+   && (cd RTKLIB/app/rtkrcv/gcc; make; make install) 
+#   && cd /root \
+#   && git clone ${NTRIP_URL} \
+#   && cd /root/ntripcaster \
+#   && git submodule update --init \ 
+#   && mkdir -p /root/ntripcaster/build \ 
+#   && (cd /root/ntripcaster/build; cmake ..) \
+#   && (cd /root/ntripcaster/build; make) \
+#   && cp /root/ntripcaster/build/ntripcaster /usr/local/bin/ 
 
 
 FROM ubuntu:18.04
 LABEL maintainer="Jacky <cheungyong@gmail.com>"
 
 
-RUN apt-get update \
-  && apt-get install -y libev-dev \
-  && apt-get clean \
-  && mkdir /data/rtk -p \
-  && mkdir /etc/ntripcaster -p
+# RUN apt-get update \
+#  && apt-get install -y libev-dev \
+#  && apt-get clean \
+#  && mkdir /data/rtk -p 
+#  && mkdir /etc/ntripcaster -p
 
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
-COPY --from=builder /data/rtk/* /data/rtk/
-COPY --from=builder /etc/ntripcaster/* /etc/ntripcaster/
-COPY entrypoint.sh /usr/local/bin/
+COPY --from=builder /data/rtk /data/
+#COPY --from=builder /etc/ntripcaster/* /etc/ntripcaster/
+#COPY entrypoint.sh /usr/local/bin/
 
-RUN chmod +x /usr/local/bin/entrypoint.sh
+#RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # run rtkrcv
 EXPOSE 2101 8077 8078 8001-8008
-VOLUME ["/data/rtk", "/etc/ntripcaster"]
-
-CMD ["/usr/local/bin/ntripcaster", "/etc/ntripcaster/config.json"]
+#VOLUME ["/data/rtk", "/etc/ntripcaster"]
+VOLUME /data/rtk
+#CMD ["/usr/local/bin/ntripcaster", "/etc/ntripcaster/config.json"]
 
 ENTRYPOINT ["/usr/local/bin/rtkrcv", "-p" ,"8077" ,"-m" ,"8078" ,"-o" ,"/data/rtk/rtkrcv.conf"]
 #CMD ["/usr/local/bin/rtkrcv", "-p", "8077", "-m", "8078", "-o", "/data/rtk/rtkrcv.conf"] 
