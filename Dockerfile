@@ -40,7 +40,7 @@ RUN apt-get update \
   && apt-get install -y libev-dev \
   && apt-get clean \
   && mkdir /data/rtk -p \
-  && mkdir /etc/ntripcaster
+  && mkdir /etc/ntripcaster -p
 
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY --from=builder /data/rtk/* /data/rtk/
