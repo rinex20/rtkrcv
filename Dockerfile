@@ -53,10 +53,11 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 EXPOSE 2101 8077 8078 8001-8008
 VOLUME ["/data/rtk", "/etc/ntripcaster"]
 
-CMD [ "/usr/local/bin/ntripcaster", "/etc/ntripcaster/config.json", ""]
+CMD ["/usr/local/bin/ntripcaster", "/etc/ntripcaster/config.json"]
 
 #ENTRYPOINT ["/usr/local/bin/rtkrcv", "-p" ,"8077" ,"-m" ,"8078" ,"-o" ,"/data/rtk/rtkrcv.conf"]
-#CMD ["/usr/local/bin/rtkrcv", "-p 8077 -m 8078 -o /data/rtk/rtkrcv.conf"] 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["/usr/local/bin/rtkrcv", "-p", "8077", "-m", "8078", "-o", "/data/rtk/rtkrcv.conf"] 
+#ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/bin/bash"]
 
 
