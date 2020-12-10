@@ -13,11 +13,11 @@ WORKDIR /root
 RUN apt-get update \
   && apt-get install -y build-essential g++ \
   && apt-get install -y git wget gfortran cmake tar libev-dev \
-   && mkdir -p /data/rtk \
-   && mkdir -p /etc/ntripcaster \
-   && cd /data/rtk \
-   && wget ${CONF_URL} -O /data/rtk/rtkrcv.conf \
-   && wget ${NTRIP_CFG} -O /etc/ntripcaster/config.json \
+#   && mkdir -p /data/rtk \
+#   && mkdir -p /etc/ntripcaster \
+#   && cd /data/rtk \
+#   && wget ${CONF_URL} -O /data/rtk/rtkrcv.conf \
+#   && wget ${NTRIP_CFG} -O /etc/ntripcaster/config.json \
    && git clone --depth 1 --branch ${RTK_VER} ${RTKLIB_URL} \
    && (cd RTKLIB/lib/iers/gcc/; make) \
    && (cd RTKLIB/app/str2str/gcc; make; make install) \
@@ -32,9 +32,8 @@ RUN apt-get update \
 #   && cp /root/ntripcaster/build/ntripcaster /usr/local/bin/ 
 
 
-FROM ubuntu:18.04
+FROM ubuntu:latest
 LABEL maintainer="Jacky <cheungyong@gmail.com>"
-
 
 # RUN apt-get update \
 #  && apt-get install -y libev-dev \
@@ -43,14 +42,14 @@ LABEL maintainer="Jacky <cheungyong@gmail.com>"
 #  && mkdir /etc/ntripcaster -p
 
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
-COPY --from=builder /data/rtk /data/
+COPY rtkrcv.conf /data/rtk/
 #COPY --from=builder /etc/ntripcaster/* /etc/ntripcaster/
 #COPY entrypoint.sh /usr/local/bin/
 
 #RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # run rtkrcv
-EXPOSE 2101 8077 8078 8001-8008
+EXPOSE 8077 8078 8001-8008
 #VOLUME ["/data/rtk", "/etc/ntripcaster"]
 VOLUME /data/rtk
 #CMD ["/usr/local/bin/ntripcaster", "/etc/ntripcaster/config.json"]
