@@ -1,6 +1,5 @@
 FROM ubuntu:18.04 as builder
 
-ENV version=20201209
 ENV RTK_VER=demo5
 ARG CONF_URL=https://raw.githubusercontent.com/rinex20/gnss_tools/master/conf/rtkrcv.conf
 ARG NTRIP_CFG=https://raw.githubusercontent.com/rinex20/another_ntripcaster/main/config.json
@@ -32,8 +31,9 @@ RUN apt-get update \
 #   && cp /root/ntripcaster/build/ntripcaster /usr/local/bin/ 
 
 
-FROM ubuntu:latest
+FROM ubuntu:18.04
 LABEL maintainer="Jacky <cheungyong@gmail.com>"
+ENV version=20201209
 
 # RUN apt-get update \
 #  && apt-get install -y libev-dev \
@@ -44,9 +44,6 @@ LABEL maintainer="Jacky <cheungyong@gmail.com>"
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY rtkrcv.conf /data/rtk/
 #COPY --from=builder /etc/ntripcaster/* /etc/ntripcaster/
-#COPY entrypoint.sh /usr/local/bin/
-
-#RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # run rtkrcv
 EXPOSE 8077 8078 8001-8008
@@ -54,9 +51,7 @@ EXPOSE 8077 8078 8001-8008
 VOLUME /data/rtk
 #CMD ["/usr/local/bin/ntripcaster", "/etc/ntripcaster/config.json"]
 
-ENTRYPOINT ["/usr/local/bin/rtkrcv", "-p" ,"8077" ,"-m" ,"8078" ,"-o" ,"/data/rtk/rtkrcv.conf"]
+ENTRYPOINT ["rtkrcv", "-p" ,"8077" ,"-m" ,"8078" ,"-o" ,"/data/rtk/rtkrcv.conf", "-s"]
 #CMD ["/usr/local/bin/rtkrcv", "-p", "8077", "-m", "8078", "-o", "/data/rtk/rtkrcv.conf"] 
-#ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-#ENTRYPOINT ["/bin/bash"]
 
 
