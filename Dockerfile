@@ -33,6 +33,7 @@ RUN apt-get update \
 FROM rinex20/another_ntripcaster:latest
 LABEL maintainer="Jacky <cheungyong@gmail.com>"
 ENV version=202109
+ENV ntripcaster 0
 
 # RUN apt-get update \
 #  && apt-get install -y libev-dev \
