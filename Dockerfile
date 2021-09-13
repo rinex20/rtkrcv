@@ -42,10 +42,9 @@ ENV version=202109
 
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY entrypoint.sh /root/
-
-RUN mkdir -p /etc/rtk \
-    && chmod a+x /root/entrypoint.sh
 COPY rtkrcv.conf /etc/rtk
+
+RUN chmod a+x /root/entrypoint.sh
 
 EXPOSE 8077 8078 8001-8008
 
