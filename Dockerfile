@@ -37,15 +37,15 @@ ENV version=202109
 # RUN apt-get update \
 #  && apt-get install -y libev-dev \
 #  && apt-get clean \
-#  && mkdir /data/rtk -p 
+#  && mkdir /data/rtk -p
 #  && mkdir /etc/ntripcaster -p
 
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
-#COPY rtkrcv.conf /data/rtk
-COPY entrypoint.sh /root
-#COPY config.json /data/rtk
+COPY entrypoint.sh /root/
 
-RUN chmod a+x /root/entrypoint.sh
+RUN mkdir -p /etc/rtk \
+    && chmod a+x /root/entrypoint.sh
+COPY rtkrcv.conf /etc/rtk
 
 EXPOSE 8077 8078 8001-8008
 
