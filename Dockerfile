@@ -32,7 +32,7 @@ RUN apt-get update \
 
 FROM rinex20/another_ntripcaster:latest
 LABEL maintainer="Jacky <cheungyong@gmail.com>"
-ENV version=20201209
+ENV version=202109
 
 # RUN apt-get update \
 #  && apt-get install -y libev-dev \
@@ -47,15 +47,6 @@ COPY config.json /data/rtk
 
 RUN chmod a+x /root/entrypoint.sh
 
-# run rtkrcv
 EXPOSE 8077 8078 8001-8008
-#VOLUME ["/data/rtk", "/etc/ntripcaster"]
-VOLUME /data/rtk
-#CMD ["/usr/local/bin/ntripcaster", "/etc/ntripcaster/config.json"]
-
 
 ENTRYPOINT ["/root/entrypoint.sh"]
-
-#CMD ["/usr/local/bin/rtkrcv", "-p", "8077", "-m", "8078", "-o", "/data/rtk/rtkrcv.conf"] 
-
-
