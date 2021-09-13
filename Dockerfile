@@ -30,7 +30,7 @@ RUN apt-get update \
 #   && cp /root/ntripcaster/build/ntripcaster /usr/local/bin/ 
 
 
-FROM ubuntu:18.04
+FROM rinex20/another_ntripcaster:latest
 LABEL maintainer="Jacky <cheungyong@gmail.com>"
 ENV version=20201209
 
@@ -41,11 +41,11 @@ ENV version=20201209
 #  && mkdir /etc/ntripcaster -p
 
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
-COPY rtkrcv.conf /data/rtk/
-COPY entrypoint.sh /usr/local/bin/
-#COPY --from=builder /etc/ntripcaster/* /etc/ntripcaster/
+COPY rtkrcv.conf /data/rtk
+COPY entrypoint.sh /root
+COPY config.json /data/rtk
 
-RUN chmod a+x /usr/local/bin/entrypoint.sh
+RUN chmod a+x /root/entrypoint.sh
 
 # run rtkrcv
 EXPOSE 8077 8078 8001-8008
@@ -54,8 +54,8 @@ VOLUME /data/rtk
 #CMD ["/usr/local/bin/ntripcaster", "/etc/ntripcaster/config.json"]
 
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-#ENTRYPOINT ["rtkrcv", "-p" ,"8077" ,"-m" ,"8078" ,"-o" ,"/data/rtk/rtkrcv.conf", "-s"]
+ENTRYPOINT ["/root/entrypoint.sh"]
+
 #CMD ["/usr/local/bin/rtkrcv", "-p", "8077", "-m", "8078", "-o", "/data/rtk/rtkrcv.conf"] 
 
 
