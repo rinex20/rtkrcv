@@ -41,9 +41,9 @@ ENV version=202109
 #  && mkdir /etc/ntripcaster -p
 
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
-COPY rtkrcv.conf /data/rtk
+#COPY rtkrcv.conf /data/rtk
 COPY entrypoint.sh /root
-COPY config.json /data/rtk
+#COPY config.json /data/rtk
 
 RUN chmod a+x /root/entrypoint.sh
 
