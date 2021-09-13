@@ -43,7 +43,10 @@ ENV version=20201209
 
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY rtkrcv.conf /data/rtk/
+COPY entrypoint.sh /usr/local/bin/
 #COPY --from=builder /etc/ntripcaster/* /etc/ntripcaster/
+
+RUN chmod a+x /usr/local/bin/entrypoint.sh
 
 # run rtkrcv
 EXPOSE 8077 8078 8001-8008
@@ -51,7 +54,9 @@ EXPOSE 8077 8078 8001-8008
 VOLUME /data/rtk
 #CMD ["/usr/local/bin/ntripcaster", "/etc/ntripcaster/config.json"]
 
-ENTRYPOINT ["rtkrcv", "-p" ,"8077" ,"-m" ,"8078" ,"-o" ,"/data/rtk/rtkrcv.conf", "-s"]
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+#ENTRYPOINT ["rtkrcv", "-p" ,"8077" ,"-m" ,"8078" ,"-o" ,"/data/rtk/rtkrcv.conf", "-s"]
 #CMD ["/usr/local/bin/rtkrcv", "-p", "8077", "-m", "8078", "-o", "/data/rtk/rtkrcv.conf"] 
 
 
