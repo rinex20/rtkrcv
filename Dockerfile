@@ -43,7 +43,7 @@ ENV version=202109
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY entrypoint.sh /root/
 
-RUN mkdir -p /etc/rtk \
+RUN mkdir -p /etc/rtk /data/rtk \
     && chmod a+x /root/entrypoint.sh
 COPY rtkrcv.conf /etc/rtk
 
