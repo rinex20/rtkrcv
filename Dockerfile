@@ -17,9 +17,9 @@ RUN apt-get update \
 #   && wget ${CONF_URL} -O /data/rtk/rtkrcv.conf \
 #   && wget ${NTRIP_CFG} -O /etc/ntripcaster/config.json \
    && git clone --depth 1 --branch ${RTK_VER} ${RTKLIB_URL} \
-   && (cd /root/RTKLIB/lib/iers/gcc/; make) \
-   && (cd /root/RTKLIB/app/str2str/gcc; make; make install) \
-   && (cd /root/RTKLIB/app/rtkrcv/gcc; make; make install) 
+   && (cd /root/RTKLIB/lib/iers/gcc/; make) \ 
+   && (cd /root/RTKLIB/app/consapp/str2str/gcc; make; make install) \
+   && (cd /root/RTKLIB/app/consapp/rtkrcv/gcc; make; make install) 
 #   && cd /root \
 #   && git clone ${NTRIP_URL} \
 #   && cd /root/ntripcaster \
