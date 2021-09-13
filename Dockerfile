@@ -14,13 +14,12 @@ RUN apt-get update \
   && apt-get install -y git wget gfortran cmake tar libev-dev \
 #   && mkdir -p /data/rtk \
 #   && mkdir -p /etc/ntripcaster \
-#   && cd /data/rtk \
 #   && wget ${CONF_URL} -O /data/rtk/rtkrcv.conf \
 #   && wget ${NTRIP_CFG} -O /etc/ntripcaster/config.json \
    && git clone --depth 1 --branch ${RTK_VER} ${RTKLIB_URL} \
-   && (cd RTKLIB/lib/iers/gcc/; make) \
-   && (cd RTKLIB/app/str2str/gcc; make; make install) \
-   && (cd RTKLIB/app/rtkrcv/gcc; make; make install) 
+   && (cd /root/RTKLIB/lib/iers/gcc/; make) \
+   && (cd /root/RTKLIB/app/str2str/gcc; make; make install) \
+   && (cd /root/RTKLIB/app/rtkrcv/gcc; make; make install) 
 #   && cd /root \
 #   && git clone ${NTRIP_URL} \
 #   && cd /root/ntripcaster \
