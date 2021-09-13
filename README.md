@@ -1,8 +1,8 @@
 # rtkrcv
 
-## 1. how to run?
+## 1. How to run?
 
-## 2. configure
+## 2. Configure
 
-## 3. others
+## 3. Others
 
