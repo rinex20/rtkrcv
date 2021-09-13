@@ -5,6 +5,11 @@ Get the latest image:
 
 ## 1. How to run?
 
+### a. docker
+
+### b. docker-compose
+
+
 ## 2. Configure
 
 ## 3. Others
