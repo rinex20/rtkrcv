@@ -8,7 +8,9 @@ Get the latest image:
 ### a. docker cli
 
 <pre>
-docker run -d --restart=unless-stopped --name=rtk \
+docker run -d \
+   --restart=unless-stopped \
+   --name=rtk \
    --network=bridge \ 
    -p 8001:2101 -p 8002-8005:8002-8005 \
    -p 8077-8078:8077-8078 \ 
