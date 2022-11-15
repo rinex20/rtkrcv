@@ -1,0 +1,17 @@
+[Unit]
+Description=Upload raw Data
+After=network.target network-online.target multi-user.target
+
+
+[Service]
+Type=simple
+User=root
+EnvironmentFile=/etc/default/str2str
+
+ExecStart=/usr/local/bin/str2str $OPTS
+Restart=on-failure
+KillMode=process
+
+
+[Install]
+WantedBy=multi-user.target
