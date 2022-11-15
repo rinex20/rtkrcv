@@ -1,7 +1,6 @@
 [Unit]
 Description=Upload raw Data
-After=network.target network-online.target multi-user.target
-
+After=network.target network-online.target
 
 [Service]
 Type=simple
