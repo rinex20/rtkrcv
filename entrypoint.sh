@@ -14,6 +14,6 @@ else
   if [ $AUTORUN -eq 1 ]; then
     echo "$:start rtkrcv..."
     echo "$:the following logs from rtkrcv."
-    /usr/local/bin/rtkrcv -p 8077 -m 8078 -o /data/rtk/rtkrcv.conf
+    /usr/local/bin/rtkrcv2 -d $type -in $path -s --rate $rate --posmode $posmode --msm $msm
   fi
 fi
