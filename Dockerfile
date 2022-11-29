@@ -1,9 +1,9 @@
 FROM ubuntu:18.04 as builder
 
-ENV RTK_VER=demo5
+ENV RTK_VER=demo5-for-rtkplus
 ARG CONF_URL=https://raw.githubusercontent.com/rinex20/gnss_tools/master/conf/rtkrcv.conf
 ARG NTRIP_CFG=https://raw.githubusercontent.com/rinex20/another_ntripcaster/main/config.json
-ARG RTKLIB_URL=https://github.com/rtklibexplorer/RTKLIB.git
+ARG RTKLIB_URL=https://github.com/datagnss/RTKLIB-datagnss.git
 ARG NTRIP_URL=https://github.com/tisyang/ntripcaster.git
 # get conf file
 
@@ -17,9 +17,9 @@ RUN apt-get update \
 #   && wget ${CONF_URL} -O /data/rtk/rtkrcv.conf \
 #   && wget ${NTRIP_CFG} -O /etc/ntripcaster/config.json \
    && git clone --depth 1 --branch ${RTK_VER} ${RTKLIB_URL} \
-   && (cd /root/RTKLIB/lib/iers/gcc/; make) \ 
-   && (cd /root/RTKLIB/app/consapp/str2str/gcc; make; make install) \
-   && (cd /root/RTKLIB/app/consapp/rtkrcv/gcc; make; make install) 
+   && (cd /root/RTKLIB-datagnss/lib/iers/gcc/; make) \ 
+   && (cd /root/RTKLIB-datagnss/app/consapp/str2str/gcc; make; make install) \
+   && (cd /root/RTKLIB-datagnss/app/consapp/rtkrcv/gcc; make; make install) 
 #   && cd /root \
 #   && git clone ${NTRIP_URL} \
 #   && cd /root/ntripcaster \
@@ -32,9 +32,13 @@ RUN apt-get update \
 
 FROM rinex20/another_ntripcaster:latest
 LABEL maintainer="Jacky <cheungyong@gmail.com>"
-ENV version=202109
+ENV version=202211
 ENV ntripcaster 0
 ENV AUTORUN 1
+ENV rate 5
+ENV msm 4
+ENV type 4
+ENV path localhost:6799
 
 # RUN apt-get update \
 #  && apt-get install -y libev-dev \
@@ -44,7 +48,7 @@ ENV AUTORUN 1
 
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY entrypoint.sh /root/entrypoint.sh
-COPY rtkrcv.conf /etc/rtk/rtkrcv.conf
+#COPY rtkrcv.conf /etc/rtk/rtkrcv.conf
 
 RUN chmod a+x /root/entrypoint.sh
 
